@@ -9,7 +9,7 @@ namespace mint_headlines
 {
     class MintScrape
     {
-        public void GetFeedXml(Uri feedUri)
+        public void GetFeedXml(Uri feedUri, int headlinesToShow)
         {
             var xmlFeedData = GetXmlFeedData(feedUri);
 
@@ -28,7 +28,9 @@ namespace mint_headlines
             {
                 var rssXmlDocNodes = rssXmlDoc.SelectNodes("/rss/channel/item");
 
-                for (var i = 0; i < rssXmlDocNodes.Count; i++)
+                var count = getCount(rssXmlDocNodes.Count, headlinesToShow);
+
+                for (var i = 0; i < count; i++)
                 {
                     Console.WriteLine(rssXmlDocNodes.Item(i).SelectSingleNode("title").InnerXml);
                     Console.WriteLine(rssXmlDocNodes.Item(i).SelectSingleNode("link").InnerXml);
@@ -81,6 +83,16 @@ namespace mint_headlines
             cDataContent = cDataContent.Replace("&#8211;", "-");
 
             return cDataContent;
+        }
+
+        public int getCount(int rssReturned, int countWanted) {
+            if (countWanted == 0) {
+                return rssReturned;
+            } else if (countWanted > rssReturned) {
+                return rssReturned;
+            } else {
+                return countWanted;
+            }
         }
     }
 }
