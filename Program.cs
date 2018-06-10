@@ -22,9 +22,12 @@ namespace mint_headlines
                     ? headlineCount.Value()
                     : "0";
 
-                int num;
-                if (int.TryParse(headlineToShow, out num)) {
-                    Console.WriteLine($"Showing top {num} headlines.");
+                if (int.TryParse(headlineToShow, out int num)) {
+                    if (num == 0) {
+                        Console.WriteLine("Showing all headlines in RSS feed.");
+                    } else {
+                        Console.WriteLine($"Showing top {num} headlines.");
+                    }
                 } else {
                     Console.WriteLine($"count parameter must be a number");
                     return 1;
